@@ -73,21 +73,39 @@ boutonNoDescription.addEventListener("click", function () {
    console.log(piecesFiltrees);
 });
 
-const noms = pieces.map(piece => piece.nom);
-for(let i = pieces.length -1 ; i >= 0; i--){
+// const noms = pieces.map(piece => [piece.nom, piece.prix]);
+const nomsAbordables = pieces.map(piece => piece.nom);
+const nomsDisponibles = pieces.map(piece => [piece.nom, piece.prix]);
+
+for(let i = pieces.length-1 ; i >= 0; i--){
     if(pieces[i].prix > 35){
-        noms.splice(i,1);
+            nomsAbordables.splice(i,1);
+    }
+    if(!pieces[i].disponibilite) {
+            nomsDisponibles.splice(i,1)
     }
 }
 
-//Création de la liste
+console.log(nomsAbordables, nomsDisponibles)
+
+//Création de la liste abordables
 const abordablesElements = document.createElement('ul');
 //Ajout de chaque nom à la liste
-for(let i=0; i < noms.length ; i++){
-    const nomElement = document.createElement('li');
-    nomElement.innerText = noms[i];
-    abordablesElements.appendChild(nomElement)
+for(let i=0; i < nomsAbordables.length ; i++){
+    const nomAbordablesElement = document.createElement('li');
+    nomAbordablesElement.innerText = nomsAbordables[i];
+    abordablesElements.appendChild(nomAbordablesElement)
 }
 // Ajout de l'en-tête puis de la liste au bloc résultats filtres
-document.querySelector('.abordables')
-    .appendChild(abordablesElements)
+document.querySelector('.abordables').appendChild(abordablesElements)
+
+//Création de la liste disponibles
+const disponiblesElements = document.createElement("ul")
+//Ajout de chaque nom à la liste
+for(let j=0; j < nomsDisponibles.length; j++) {
+    const nomDispoElement = document.createElement("li")
+    nomDispoElement.innerText = `${nomsDisponibles[j][0]} - ${nomsDisponibles[j][1]} €`
+    console.log(nomDispoElement)
+    disponiblesElements.appendChild(nomDispoElement)
+}
+document.querySelector('.disponibles').appendChild(disponiblesElements)
